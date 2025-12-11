@@ -178,13 +178,13 @@
     "global": {
       "anchors": [
         {
-          "anchor": "API Status",
-          "href": "https://status.aden.com",
-          "icon": "signal"
+          "anchor": "Website",
+          "href": "https://adenhq.com",
+          "icon": "globe"
         },
         {
           "anchor": "Support",
-          "href": "https://support.aden.com",
+          "href": "mailto:contact@adenhq.com",
           "icon": "headset"
         }
       ]
@@ -198,13 +198,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@aden.com"
+        "href": "mailto:contact@adenhq.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.aden.com"
+      "label": "Get Started",
+      "href": "https://adenhq.com"
     }
   },
   "api": {
