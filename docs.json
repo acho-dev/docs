@@ -20,31 +20,6 @@
         ]
       },
       {
-        "tab": "MCP Server",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "mcp-server/introduction",
-              "mcp-server/installation",
-              "mcp-server/configuration"
-            ]
-          },
-          {
-            "group": "Tools Reference",
-            "pages": [
-              "mcp-server/tools/overview",
-              "mcp-server/tools/reports",
-              "mcp-server/tools/journal-entries",
-              "mcp-server/tools/bills",
-              "mcp-server/tools/invoices",
-              "mcp-server/tools/accounting-periods",
-              "mcp-server/tools/chart-of-accounts"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "General Ledger API",
         "groups": [
           {
@@ -195,6 +170,31 @@
             "pages": [
               "api-reference/general-ledger/audit-log/overview",
               "api-reference/general-ledger/audit-log/list"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "MCP Server",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "mcp-server/introduction",
+              "mcp-server/installation",
+              "mcp-server/configuration"
+            ]
+          },
+          {
+            "group": "Tools Reference",
+            "pages": [
+              "mcp-server/tools/overview",
+              "mcp-server/tools/reports",
+              "mcp-server/tools/journal-entries",
+              "mcp-server/tools/bills",
+              "mcp-server/tools/invoices",
+              "mcp-server/tools/accounting-periods",
+              "mcp-server/tools/chart-of-accounts"
             ]
           }
         ]
