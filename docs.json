@@ -183,9 +183,9 @@
           "icon": "globe"
         },
         {
-          "anchor": "Support",
-          "href": "mailto:contact@adenhq.com",
-          "icon": "headset"
+          "anchor": "Book a Call",
+          "href": "https://calendly.com/contact_aden/discovery-call",
+          "icon": "calendar"
         }
       ]
     }
@@ -197,8 +197,8 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:contact@adenhq.com"
+        "label": "Book a Call",
+        "href": "https://calendly.com/contact_aden/discovery-call"
       }
     ],
     "primary": {
