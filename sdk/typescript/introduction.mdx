@@ -1,0 +1,114 @@
+---
+title: "TypeScript SDK"
+description: "LLM Observability & Cost Control SDK for TypeScript"
+---
+
+## Overview
+
+The Aden TypeScript SDK provides real-time usage tracking, budget enforcement, and cost control for LLM applications. It automatically instruments OpenAI, Anthropic Claude, and Google Gemini API calls without modifying your application code.
+
+<Card
+  title="GitHub Repository"
+  icon="github"
+  href="https://github.com/adenhq/aden-ts"
+>
+  View source code and contribute
+</Card>
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Multi-Provider Support" icon="layer-group">
+    Works with OpenAI, Anthropic, and Google Gemini with a single integration.
+  </Card>
+  <Card title="Zero Code Changes" icon="wand-magic-sparkles">
+    Automatic instrumentation - just call `instrument()` once at startup.
+  </Card>
+  <Card title="Real-Time Cost Control" icon="shield-halved">
+    Budget limits, throttling, and automatic model degradation.
+  </Card>
+  <Card title="Comprehensive Metrics" icon="chart-simple">
+    Track tokens, latency, costs, tool calls, and more.
+  </Card>
+</CardGroup>
+
+## Supported Providers
+
+| Provider | SDK Package | Status |
+|----------|-------------|--------|
+| OpenAI | `openai` | Full support (Chat, Responses API, streaming) |
+| Anthropic | `@anthropic-ai/sdk` | Full support (Messages API, streaming, tools) |
+| Google Gemini | `@google/generative-ai` | Full support (generateContent, chat) |
+
+## Framework Compatibility
+
+The SDK works seamlessly with popular AI frameworks:
+
+- **Vercel AI SDK** - Via fetch instrumentation
+- **LangChain** - Instruments underlying LLM providers
+- **LlamaIndex** - Works with instrumented providers
+- **Mastra** - Full agent stack tracking support
+
+## What Gets Tracked
+
+Every LLM API call is captured with:
+
+| Metric | Description |
+|--------|-------------|
+| `input_tokens` | Prompt/input tokens used |
+| `output_tokens` | Completion/output tokens generated |
+| `cached_tokens` | Tokens served from prompt cache |
+| `reasoning_tokens` | Reasoning tokens (o1/o3 models) |
+| `latency_ms` | Request duration in milliseconds |
+| `model` | Model name (e.g., `gpt-4o`, `claude-3-5-sonnet`) |
+| `provider` | Provider name (`openai`, `anthropic`, `gemini`) |
+| `tool_calls` | Function/tool calls made |
+| `trace_id` | OpenTelemetry-compatible trace ID |
+| `agent_stack` | Named agent context for multi-agent systems |
+
+## Quick Example
+
+```typescript
+import { instrument, createConsoleEmitter } from "aden";
+import OpenAI from "openai";
+
+// 1. Instrument at startup (before creating clients)
+await instrument({
+  emitMetric: createConsoleEmitter({ pretty: true }),
+  sdks: { OpenAI },
+});
+
+// 2. Use your SDK normally - metrics are captured automatically
+const openai = new OpenAI();
+const response = await openai.chat.completions.create({
+  model: "gpt-4o",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+
+// Console output:
+// {
+//   provider: "openai",
+//   model: "gpt-4o",
+//   input_tokens: 10,
+//   output_tokens: 25,
+//   latency_ms: 342,
+//   ...
+// }
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/sdk/typescript/installation">
+    Install the SDK and peer dependencies
+  </Card>
+  <Card title="Quick Start" icon="rocket" href="/sdk/typescript/quickstart">
+    Get up and running in 5 minutes
+  </Card>
+  <Card title="Instrumentation" icon="plug" href="/sdk/typescript/instrumentation">
+    Learn about global and per-instance instrumentation
+  </Card>
+  <Card title="Cost Control" icon="shield" href="/sdk/typescript/cost-control">
+    Set up budgets and control actions
+  </Card>
+</CardGroup>

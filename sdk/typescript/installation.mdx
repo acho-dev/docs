@@ -1,0 +1,140 @@
+---
+title: "Installation"
+description: "Install the Aden TypeScript SDK"
+---
+
+## Install the SDK
+
+```bash
+npm install aden
+```
+
+Or with other package managers:
+
+<CodeGroup>
+
+```bash npm
+npm install aden
+```
+
+```bash yarn
+yarn add aden
+```
+
+```bash pnpm
+pnpm add aden
+```
+
+```bash bun
+bun add aden
+```
+
+</CodeGroup>
+
+## Install Provider SDKs
+
+Install the LLM provider SDKs you plan to use:
+
+<CodeGroup>
+
+```bash OpenAI
+npm install openai
+```
+
+```bash Anthropic
+npm install @anthropic-ai/sdk
+```
+
+```bash Google Gemini
+npm install @google/generative-ai
+```
+
+```bash All Providers
+npm install openai @anthropic-ai/sdk @google/generative-ai
+```
+
+</CodeGroup>
+
+## Requirements
+
+| Requirement | Version |
+|-------------|---------|
+| Node.js | >= 18.0.0 |
+| TypeScript | >= 5.0.0 (optional) |
+
+### Peer Dependencies
+
+| Package | Version | Required |
+|---------|---------|----------|
+| `openai` | >= 4.0.0 | If using OpenAI |
+| `@anthropic-ai/sdk` | >= 0.20.0 | If using Anthropic |
+| `@google/generative-ai` | >= 0.1.0 | If using Gemini |
+
+## Verify Installation
+
+Create a simple test file:
+
+```typescript
+import { instrument, createConsoleEmitter, uninstrument } from "aden";
+import OpenAI from "openai";
+
+async function main() {
+  // Instrument the SDK
+  const result = await instrument({
+    emitMetric: createConsoleEmitter({ pretty: true }),
+    sdks: { OpenAI },
+  });
+
+  console.log("Instrumented:", result);
+  // Output: { openai: true, anthropic: false, gemini: false }
+
+  // Clean up
+  await uninstrument();
+}
+
+main();
+```
+
+Run the test:
+
+```bash
+npx tsx test.ts
+```
+
+## TypeScript Configuration
+
+For TypeScript projects, ensure your `tsconfig.json` includes:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "strict": true
+  }
+}
+```
+
+## CommonJS vs ESM
+
+The SDK supports both module formats:
+
+<CodeGroup>
+
+```typescript ESM (Recommended)
+import { instrument, createConsoleEmitter } from "aden";
+```
+
+```javascript CommonJS
+const { instrument, createConsoleEmitter } = require("aden");
+```
+
+</CodeGroup>
+
+## Next Steps
+
+<Card title="Quick Start" icon="rocket" href="/sdk/typescript/quickstart">
+  Learn how to instrument your first LLM application
+</Card>

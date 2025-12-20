@@ -1,97 +1,134 @@
 ---
 title: "Introduction"
-description: "Welcome to the Aden API Documentation"
+description: "Welcome to the Aden Documentation"
 ---
 
-## Manage Projects Profitably with AI-Native ERP
+## LLM Observability & Cost Control
 
-Aden is a next-gen automation platform that unifies project operations with financial management. Our APIs enable you to connect project efficiency to financial predictability, helping organizations scale profitably.
+Aden provides SDKs for TypeScript and Python that automatically track every LLM API call in your application - usage, latency, costs - and give you real-time controls to prevent budget overruns.
 
-<Card
-  title="General Ledger API"
-  icon="book"
-  href="/api-reference/general-ledger/introduction"
-  horizontal
->
-  Complete API documentation for the General Ledger system.
-</Card>
-
-## API Overview
-
-Aden's General Ledger API provides everything you need to manage financial operations - from project delivery to financial close:
-
-<Columns cols={2}>
+<CardGroup cols={2}>
   <Card
-    title="Chart of Accounts"
-    icon="sitemap"
-    href="/api-reference/general-ledger/accounts/overview"
+    title="TypeScript SDK"
+    icon="js"
+    href="/sdk/typescript/introduction"
   >
-    Create and manage your chart of accounts with hierarchical structures.
+    Instrument OpenAI, Anthropic, and Gemini in Node.js applications.
   </Card>
   <Card
-    title="Journal Entries"
-    icon="pen-to-square"
-    href="/api-reference/general-ledger/journal-entries/overview"
+    title="Python SDK"
+    icon="python"
+    href="/sdk/python/introduction"
   >
-    Record financial transactions with multi-level approval workflows.
+    Track LLM usage in Python with support for FastAPI, Django, and more.
   </Card>
-  <Card
-    title="Accounts Payable"
-    icon="file-invoice-dollar"
-    href="/api-reference/general-ledger/bills/overview"
-  >
-    Manage vendor bills, payments, and AP aging reports.
-  </Card>
-  <Card
-    title="Accounts Receivable"
-    icon="receipt"
-    href="/api-reference/general-ledger/invoices/overview"
-  >
-    Handle customer invoices, payments, and credit memos.
-  </Card>
-</Columns>
+</CardGroup>
 
 ## Key Features
 
-<Columns cols={2}>
-  <Card
-    title="Approval Workflows"
-    icon="check-double"
-    href="/api-reference/general-ledger/approval-rules/overview"
-  >
-    Configure multi-level approval rules based on amounts, departments, and roles.
+<CardGroup cols={2}>
+  <Card title="Multi-Provider Support" icon="layer-group">
+    Works with OpenAI, Anthropic Claude, and Google Gemini with a single integration.
   </Card>
-  <Card
-    title="Financial Reports"
-    icon="chart-line"
-    href="/api-reference/general-ledger/reports/overview"
-  >
-    Generate trial balance, balance sheet, income statement, and more.
+  <Card title="Zero Code Changes" icon="wand-magic-sparkles">
+    Automatic instrumentation - just call `instrument()` once at startup.
   </Card>
-  <Card
-    title="Bank Reconciliation"
-    icon="building-columns"
-    href="/api-reference/general-ledger/reconciliations/overview"
-  >
-    Reconcile bank statements with your general ledger.
+  <Card title="Real-Time Cost Control" icon="shield-halved">
+    Set budgets, throttle requests, and automatically degrade to cheaper models.
   </Card>
-  <Card
-    title="Audit Trail"
-    icon="clipboard-list"
-    href="/api-reference/general-ledger/audit-log/overview"
-  >
-    Complete audit logging for compliance and tracking.
+  <Card title="OpenTelemetry Compatible" icon="diagram-project">
+    Trace IDs, span IDs, and agent stacks for multi-agent observability.
   </Card>
-</Columns>
+</CardGroup>
 
-## Platform Capabilities
+## Quick Start
 
-Aden's AI-native architecture provides:
+<Tabs>
+  <Tab title="TypeScript">
+    ```typescript
+    import { instrument, createConsoleEmitter } from "aden";
+    import OpenAI from "openai";
 
-- **Multi-entity Support**: Manage multiple legal entities with consolidated reporting
-- **Multi-currency**: Full support for international operations
-- **Real-time Visibility**: Unified project and financial data
-- **Seamless Integration**: Connect with your existing tools and workflows
+    // Instrument at startup
+    await instrument({
+      emitMetric: createConsoleEmitter({ pretty: true }),
+      sdks: { OpenAI },
+    });
+
+    // Use your SDK normally - metrics captured automatically
+    const openai = new OpenAI();
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: "Hello!" }],
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    from aden import instrument, MeterOptions, create_console_emitter
+    from openai import OpenAI
+
+    # Instrument at startup
+    instrument(MeterOptions(
+        emit_metric=create_console_emitter(pretty=True),
+    ))
+
+    # Use your SDK normally - metrics captured automatically
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": "Hello!"}],
+    )
+    ```
+  </Tab>
+</Tabs>
+
+## What Gets Tracked
+
+Every LLM API call is captured with comprehensive metrics:
+
+| Metric | Description |
+|--------|-------------|
+| `input_tokens` | Prompt/input tokens used |
+| `output_tokens` | Completion/output tokens generated |
+| `cached_tokens` | Tokens served from prompt cache |
+| `latency_ms` | Request duration in milliseconds |
+| `model` | Model name (e.g., `gpt-4o`, `claude-3-5-sonnet`) |
+| `provider` | Provider name (`openai`, `anthropic`, `gemini`) |
+| `tool_calls` | Function/tool calls made |
+| `trace_id` | OpenTelemetry-compatible trace ID |
+| `agent_stack` | Named agent context for multi-agent systems |
+
+## Cost Control Actions
+
+Prevent budget overruns with real-time controls:
+
+| Action | Effect |
+|--------|--------|
+| **allow** | Request proceeds normally |
+| **block** | Request rejected when budget exhausted |
+| **throttle** | Request delayed for rate limiting |
+| **degrade** | Switch to cheaper model when approaching budget |
+| **alert** | Proceed with notification at warning threshold |
+
+## Platform Products
+
+<CardGroup cols={2}>
+  <Card
+    title="General Ledger API"
+    icon="book"
+    href="/api-reference/general-ledger/introduction"
+  >
+    Complete API for financial operations - chart of accounts, journal entries, AP/AR, and reporting.
+  </Card>
+  <Card
+    title="MCP Server"
+    icon="server"
+    href="/mcp-server/introduction"
+  >
+    Model Context Protocol server for AI-powered financial operations.
+  </Card>
+</CardGroup>
 
 ## Need Help?
 
@@ -100,5 +137,5 @@ Aden's AI-native architecture provides:
   icon="calendar"
   href="https://calendly.com/contact_aden/discovery-call"
 >
-  Schedule a call with our team.
+  Schedule a call with our team to learn more.
 </Card>

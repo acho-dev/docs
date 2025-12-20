@@ -1,0 +1,113 @@
+---
+title: "Python SDK"
+description: "LLM Observability & Cost Control SDK for Python"
+---
+
+## Overview
+
+The Aden Python SDK provides real-time usage tracking, budget enforcement, and cost control for LLM applications. It automatically instruments OpenAI, Anthropic Claude, and Google Gemini API calls without modifying your application code.
+
+<Card
+  title="GitHub Repository"
+  icon="github"
+  href="https://github.com/adenhq/aden-py"
+>
+  View source code and contribute
+</Card>
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Multi-Provider Support" icon="layer-group">
+    Works with OpenAI, Anthropic, and Google Gemini with a single integration.
+  </Card>
+  <Card title="Zero Code Changes" icon="wand-magic-sparkles">
+    Automatic instrumentation - just call `instrument()` once at startup.
+  </Card>
+  <Card title="Real-Time Cost Control" icon="shield-halved">
+    Budget limits, throttling, and automatic model degradation.
+  </Card>
+  <Card title="Comprehensive Metrics" icon="chart-simple">
+    Track tokens, latency, costs, tool calls, and more.
+  </Card>
+</CardGroup>
+
+## Supported Providers
+
+| Provider | Package | Status |
+|----------|---------|--------|
+| OpenAI | `openai` | Full support (Chat Completions, streaming, tools) |
+| Anthropic | `anthropic` | Full support (Messages API, streaming, tools) |
+| Google Gemini | `google-generativeai` | Full support (generateContent, chat) |
+
+## Framework Compatibility
+
+The SDK works with popular Python AI frameworks:
+
+- **PydanticAI** - Full integration support
+- **LangChain** - Instruments underlying LLM providers
+- **LlamaIndex** - Works with instrumented providers
+- **LiveKit Voice Agents** - Specialized voice agent support
+
+## What Gets Tracked
+
+Every LLM API call is captured with:
+
+| Metric | Description |
+|--------|-------------|
+| `input_tokens` | Prompt/input tokens used |
+| `output_tokens` | Completion/output tokens generated |
+| `cached_tokens` | Tokens served from prompt cache |
+| `reasoning_tokens` | Reasoning tokens (o1/o3 models) |
+| `latency_ms` | Request duration in milliseconds |
+| `model` | Model name (e.g., `gpt-4o`, `claude-3-5-sonnet`) |
+| `provider` | Provider name (`openai`, `anthropic`, `gemini`) |
+| `tool_calls` | Function/tool calls made |
+| `trace_id` | OpenTelemetry-compatible trace ID |
+| `rate_limit` | Rate limit information from headers |
+
+## Quick Example
+
+```python
+from aden import instrument, MeterOptions, create_console_emitter
+from openai import OpenAI
+
+# 1. Instrument at startup (before creating clients)
+instrument(MeterOptions(
+    emit_metric=create_console_emitter(pretty=True),
+))
+
+# 2. Use your SDK normally - metrics are captured automatically
+client = OpenAI()
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+
+# Console output:
+# {
+#   "provider": "openai",
+#   "model": "gpt-4o",
+#   "input_tokens": 10,
+#   "output_tokens": 25,
+#   "latency_ms": 342,
+#   ...
+# }
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/sdk/python/installation">
+    Install the SDK and dependencies
+  </Card>
+  <Card title="Quick Start" icon="rocket" href="/sdk/python/quickstart">
+    Get up and running in 5 minutes
+  </Card>
+  <Card title="Instrumentation" icon="plug" href="/sdk/python/instrumentation">
+    Learn about global instrumentation
+  </Card>
+  <Card title="Cost Control" icon="shield" href="/sdk/python/cost-control">
+    Set up budgets and control actions
+  </Card>
+</CardGroup>

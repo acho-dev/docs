@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Aden API Documentation",
+  "name": "Aden Documentation",
   "colors": {
     "primary": "#2563EB",
     "light": "#3B82F6",
@@ -10,6 +10,49 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
+      {
+        "tab": "TypeScript SDK",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sdk/typescript/introduction",
+              "sdk/typescript/installation",
+              "sdk/typescript/quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "sdk/typescript/instrumentation",
+              "sdk/typescript/emitters",
+              "sdk/typescript/cost-control",
+              "sdk/typescript/agent-tracking"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Python SDK",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sdk/python/introduction",
+              "sdk/python/installation",
+              "sdk/python/quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "sdk/python/instrumentation",
+              "sdk/python/emitters",
+              "sdk/python/cost-control"
+            ]
+          }
+        ]
+      },
       {
         "tab": "Guides",
         "groups": [
