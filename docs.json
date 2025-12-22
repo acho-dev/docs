@@ -49,7 +49,10 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["api-reference/general-ledger/introduction"]
+            "pages": [
+              "api-reference/general-ledger/introduction",
+              "api-reference/general-ledger/quickstart"
+            ]
           },
           {
             "group": "Chart of Accounts",
