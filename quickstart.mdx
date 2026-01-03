@@ -1,214 +1,158 @@
 ---
 title: "Quickstart"
-description: "Get started with Aden LLM observability in 5 minutes"
+description: "Instrument your first LLM call in under 5 minutes"
 ---
 
-## Choose Your Language
+By the end of this guide, you'll see every LLM call automatically tracked with latency, tokens, and cost. This is the foundation for connecting your agents to Aden's shared intelligence network.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Runtime" icon="code">
+    Node.js 18+ or Python 3.9+
+  </Card>
+  <Card title="LLM Provider" icon="key">
+    API key for OpenAI, Anthropic, or Google
+  </Card>
+</CardGroup>
+
+## Step 1: Install the SDK
 
 <Tabs>
   <Tab title="TypeScript">
-    <Steps>
-      <Step title="Install the SDK">
-        ```bash
-        npm install aden openai
-        ```
-      </Step>
-
-      <Step title="Instrument at startup">
-        Add instrumentation **before** creating any LLM clients:
-
-        ```typescript
-        import { instrument, createConsoleEmitter } from "aden";
-        import OpenAI from "openai";
-
-        await instrument({
-          emitMetric: createConsoleEmitter({ pretty: true }),
-          sdks: { OpenAI },
-        });
-        ```
-      </Step>
-
-      <Step title="Use your SDK normally">
-        ```typescript
-        const openai = new OpenAI();
-
-        const response = await openai.chat.completions.create({
-          model: "gpt-4o",
-          messages: [{ role: "user", content: "What is 2+2?" }],
-        });
-
-        console.log(response.choices[0].message.content);
-        // Metrics automatically captured: latency, tokens, model, etc.
-        ```
-      </Step>
-    </Steps>
+    ```bash
+    npm install aden openai
+    ```
   </Tab>
-
   <Tab title="Python">
-    <Steps>
-      <Step title="Install the SDK">
-        ```bash
-        pip install aden openai
-        ```
-      </Step>
-
-      <Step title="Instrument at startup">
-        Add instrumentation **before** creating any LLM clients:
-
-        ```python
-        from aden import instrument, MeterOptions, create_console_emitter
-
-        instrument(MeterOptions(
-            emit_metric=create_console_emitter(pretty=True),
-        ))
-        ```
-      </Step>
-
-      <Step title="Use your SDK normally">
-        ```python
-        from openai import OpenAI
-
-        client = OpenAI()
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": "What is 2+2?"}],
-        )
-
-        print(response.choices[0].message.content)
-        # Metrics automatically captured: latency, tokens, model, etc.
-        ```
-      </Step>
-    </Steps>
+    ```bash
+    pip install aden openai
+    ```
   </Tab>
 </Tabs>
 
-## Multi-Provider Support
+## Step 2: Instrument Your Application
 
-Instrument multiple LLM providers with a single setup:
+Add instrumentation **before** creating any LLM clients. This wraps the SDK to capture metrics automatically.
 
 <Tabs>
   <Tab title="TypeScript">
     ```typescript
     import { instrument, createConsoleEmitter } from "aden";
     import OpenAI from "openai";
-    import Anthropic from "@anthropic-ai/sdk";
-    import { GoogleGenerativeAI } from "@google/generative-ai";
 
+    // Instrument at startup - must come before creating clients
     await instrument({
       emitMetric: createConsoleEmitter({ pretty: true }),
-      sdks: {
-        OpenAI,
-        Anthropic,
-        GoogleGenerativeAI,
-      },
+      sdks: { OpenAI },
     });
-
-    // All providers now instrumented
-    const openai = new OpenAI();
-    const anthropic = new Anthropic();
-    const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
     ```
   </Tab>
-
   <Tab title="Python">
     ```python
     from aden import instrument, MeterOptions, create_console_emitter
-    from openai import OpenAI
-    from anthropic import Anthropic
-    import google.generativeai as genai
 
+    # Instrument at startup - must come before creating clients
     instrument(MeterOptions(
         emit_metric=create_console_emitter(pretty=True),
     ))
-
-    # All providers now instrumented
-    openai_client = OpenAI()
-    anthropic_client = Anthropic()
-    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
     ```
   </Tab>
 </Tabs>
 
-## Framework Integrations
+## Step 3: Make Your First Call
 
-Using an AI framework? Aden works automatically with popular frameworks:
-
-<CardGroup cols={2}>
-  <Card title="Vercel AI SDK" icon="bolt" href="/sdk/typescript/frameworks#vercel-ai-sdk">
-    generateText, streamText, generateObject
-  </Card>
-  <Card title="LangChain" icon="link" href="/sdk/typescript/frameworks#langchainjs">
-    Chains, agents, and LCEL
-  </Card>
-  <Card title="LlamaIndex" icon="llama" href="/sdk/typescript/frameworks#llamaindexts">
-    RAG pipelines and chat engines
-  </Card>
-  <Card title="PydanticAI" icon="cube" href="/sdk/python/frameworks#pydanticai">
-    Type-safe Python agents
-  </Card>
-</CardGroup>
-
-For frameworks that use fetch directly (Vercel AI SDK, LangChain, LlamaIndex), use fetch instrumentation:
-
-```typescript
-import { instrumentFetch, createConsoleEmitter } from "aden";
-
-await instrumentFetch({
-  emitMetric: createConsoleEmitter({ pretty: true }),
-});
-```
-
-## What Gets Tracked
-
-Every LLM API call is captured with comprehensive metrics:
-
-| Metric | Description |
-|--------|-------------|
-| `input_tokens` | Prompt/input tokens used |
-| `output_tokens` | Completion/output tokens generated |
-| `cached_tokens` | Tokens served from prompt cache |
-| `latency_ms` | Request duration in milliseconds |
-| `model` | Model name (e.g., `gpt-4o`, `claude-3-5-sonnet`) |
-| `provider` | Provider name (`openai`, `anthropic`, `gemini`) |
-| `tool_calls` | Function/tool calls made |
-| `trace_id` | OpenTelemetry-compatible trace ID |
-
-## Production Setup
-
-For production, connect to the Aden control server for real-time cost control:
+Use your LLM SDK exactly as you normally would. Aden captures metrics transparently.
 
 <Tabs>
   <Tab title="TypeScript">
     ```typescript
-    await instrument({
-      apiKey: process.env.ADEN_API_KEY,
-      serverUrl: process.env.ADEN_API_URL,
-      sdks: { OpenAI },
+    const openai = new OpenAI();
 
-      // Track usage per user for budgets
-      getContextId: () => getCurrentUserId(),
-
-      // Handle alerts
-      onAlert: (alert) => {
-        console.warn(`[${alert.level}] ${alert.message}`);
-      },
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: "What is 2+2?" }],
     });
+
+    console.log(response.choices[0].message.content);
     ```
   </Tab>
-
   <Tab title="Python">
     ```python
-    instrument(MeterOptions(
-        api_key=os.environ["ADEN_API_KEY"],
-        server_url=os.environ.get("ADEN_API_URL"),
+    from openai import OpenAI
 
-        # Track usage per user for budgets
-        get_context_id=lambda: get_current_user_id(),
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": "What is 2+2?"}],
+    )
 
-        # Handle alerts
-        on_alert=lambda alert: print(f"[{alert.level}] {alert.message}"),
-    ))
+    print(response.choices[0].message.content)
     ```
+  </Tab>
+</Tabs>
+
+## Step 4: See It Working
+
+Run your code. You'll see the analytics tab being populated and data being streamed into Aden.
+Every LLM call is now tracked with latency, token usage, model, and estimated cost.
+
+## You're Instrumented
+
+Your agent is ready to join the shared intelligence network. In production, Aden connects your agents to shared memory - where every department's knowledge flows to every other, and your agents learn from each interaction across your organization.
+
+## Connect to Production
+
+<Tabs>
+  <Tab title="I have credentials">
+    Replace the console emitter with your Aden server connection:
+
+    <Tabs>
+      <Tab title="TypeScript">
+        ```typescript
+        await instrument({
+          apiKey: process.env.ADEN_API_KEY,
+          serverUrl: process.env.ADEN_API_URL,
+          sdks: { OpenAI },
+
+          // Track usage per user for budgets
+          getContextId: () => getCurrentUserId(),
+
+          // Handle real-time alerts
+          onAlert: (alert) => {
+            console.warn(`[${alert.level}] ${alert.message}`);
+          },
+        });
+        ```
+      </Tab>
+      <Tab title="Python">
+        ```python
+        instrument(MeterOptions(
+            api_key=os.environ["ADEN_API_KEY"],
+            server_url=os.environ.get("ADEN_API_URL"),
+
+            # Track usage per user for budgets
+            get_context_id=lambda: get_current_user_id(),
+
+            # Handle real-time alerts
+            on_alert=lambda alert: print(f"[{alert.level}] {alert.message}"),
+        ))
+        ```
+      </Tab>
+    </Tabs>
+
+    Your calls now stream to the Aden dashboard in real-time, with analytics populating as your agents run.
+  </Tab>
+  <Tab title="Get access">
+    Ready to see your metrics in a live dashboard with shared intelligence across your organization?
+
+    <Card
+      title="Book a Discovery Call"
+      icon="calendar"
+      href="https://calendly.com/contact_aden/discovery-call"
+    >
+      Get your API key, dashboard access, and connect your agents to shared intelligence.
+    </Card>
   </Tab>
 </Tabs>
 
@@ -216,15 +160,15 @@ For production, connect to the Aden control server for real-time cost control:
 
 <CardGroup cols={2}>
   <Card title="TypeScript SDK" icon="js" href="/sdk/typescript/introduction">
-    Complete TypeScript documentation
+    Multi-provider support, frameworks, and advanced configuration
   </Card>
   <Card title="Python SDK" icon="python" href="/sdk/python/introduction">
-    Complete Python documentation
+    Complete Python documentation and examples
   </Card>
   <Card title="Cost Control" icon="shield" href="/sdk/typescript/cost-control">
-    Set up budgets and control actions
+    Set budgets, rate limits, and automatic model degradation
   </Card>
   <Card title="Agent Tracking" icon="robot" href="/sdk/typescript/agent-tracking">
-    Track multi-agent workflows
+    Trace multi-agent workflows with spans and named agents
   </Card>
 </CardGroup>

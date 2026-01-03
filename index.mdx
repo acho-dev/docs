@@ -1,11 +1,11 @@
 ---
 title: "Introduction"
-description: "Welcome to the Aden Documentation"
+description: "The intelligence layer that makes your AI agents smarter together"
 ---
 
-## LLM Observability & Cost Control
+## Shared Intelligence for AI Agents
 
-Aden provides SDKs for TypeScript and Python that automatically track every LLM API call in your application - usage, latency, costs - and give you real-time controls to prevent budget overruns.
+Aden is the orchestration layer that connects your AI agents to a shared memory. Every agent learns from every interaction. Every department's knowledge flows to every other. The more agents you deploy, the smarter they all become.
 
 <CardGroup cols={2}>
   <Card
@@ -13,31 +13,33 @@ Aden provides SDKs for TypeScript and Python that automatically track every LLM 
     icon="js"
     href="/sdk/typescript/introduction"
   >
-    Instrument OpenAI, Anthropic, and Gemini in Node.js applications.
+    Connect your Node.js agents to shared intelligence with a single import.
   </Card>
   <Card
     title="Python SDK"
     icon="python"
     href="/sdk/python/introduction"
   >
-    Track LLM usage in Python with support for FastAPI, Django, and more.
+    Add your Python agents to the network with zero code changes.
   </Card>
 </CardGroup>
 
-## Key Features
+## The Flywheel Effect
+
+When your Legal team updates a compliance policy, your Sales agent knows instantly. When Support discovers a new edge case, every agent learns from it. Aden creates a network effect inside your organization - each new agent makes all existing agents smarter.
 
 <CardGroup cols={2}>
-  <Card title="Multi-Provider Support" icon="layer-group">
-    Works with OpenAI, Anthropic Claude, and Google Gemini with a single integration.
+  <Card title="Real-Time Intervention" icon="shield-halved">
+    Intercept and correct issues before users see them - not post-mortem analysis.
   </Card>
-  <Card title="Zero Code Changes" icon="wand-magic-sparkles">
-    Automatic instrumentation - just call `instrument()` once at startup.
+  <Card title="Shared Context" icon="brain">
+    Agents share knowledge across departments, teams, and use cases.
   </Card>
-  <Card title="Real-Time Cost Control" icon="shield-halved">
-    Set budgets, throttle requests, and automatically degrade to cheaper models.
+  <Card title="Dynamic Routing" icon="route">
+    Hot-patch behavior, reroute requests, and degrade gracefully in real-time.
   </Card>
-  <Card title="OpenTelemetry Compatible" icon="diagram-project">
-    Trace IDs, span IDs, and agent stacks for multi-agent observability.
+  <Card title="Zero Friction" icon="wand-magic-sparkles">
+    One import. No code changes. Your agents join the network automatically.
   </Card>
 </CardGroup>
 
@@ -83,33 +85,14 @@ Aden provides SDKs for TypeScript and Python that automatically track every LLM 
   </Tab>
 </Tabs>
 
-## What Gets Tracked
+## What Makes Aden Different
 
-Every LLM API call is captured with comprehensive metrics:
-
-| Metric | Description |
-|--------|-------------|
-| `input_tokens` | Prompt/input tokens used |
-| `output_tokens` | Completion/output tokens generated |
-| `cached_tokens` | Tokens served from prompt cache |
-| `latency_ms` | Request duration in milliseconds |
-| `model` | Model name (e.g., `gpt-4o`, `claude-3-5-sonnet`) |
-| `provider` | Provider name (`openai`, `anthropic`, `gemini`) |
-| `tool_calls` | Function/tool calls made |
-| `trace_id` | OpenTelemetry-compatible trace ID |
-| `agent_stack` | Named agent context for multi-agent systems |
-
-## Cost Control Actions
-
-Prevent budget overruns with real-time controls:
-
-| Action | Effect |
-|--------|--------|
-| **allow** | Request proceeds normally |
-| **block** | Request rejected when budget exhausted |
-| **throttle** | Request delayed for rate limiting |
-| **degrade** | Switch to cheaper model when approaching budget |
-| **alert** | Proceed with notification at warning threshold |
+| Traditional Tools | Aden |
+|-------------------|------|
+| Post-mortem analysis | Real-time intervention |
+| Isolated agents | Shared intelligence |
+| Dashboard you check | Infrastructure you depend on |
+| Per-seat pricing | Value scales with usage |
 
 ## Platform Products
 
