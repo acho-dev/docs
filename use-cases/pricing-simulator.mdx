@@ -1,13 +1,264 @@
 ---
 title: "Pricing Simulation"
-description: "A tool to build a pricing model to convert usage records to a bill."
+description: "Design, test, and optimize usage-based pricing models that align with your AI agent's value delivery."
 ---
+
+You've built an AI agent that customers love. Now comes the hard part: pricing it so you make money without leaving revenue on the table or losing customers to surprise bills.
+
+## Why Pricing Simulation Matters
+
+Traditional SaaS pricing breaks down fast for AI agents because usage varies wildly. Some customers generate $50 in costs, others $700. A flat fee means you're either:
+
+- **Undercharging power users** — leaving money on the table
+- **Overcharging light users** — driving them away
+- **Going negative on high-usage customers** — literally paying them to use your product
+
+**The Pricing Simulator lets you model, test, and validate usage-based pricing before going live.** Play with different pricing structures, see projected revenue and margins, and find the sweet spot where you make money without surprising your customers.
+
+## How It Works
+
+The Pricing Simulator is a dev-first tool that bridges your telemetry data with billing logic. Here's the flow:
+
+```
+Your AI Agent Usage          Pricing Simulator              Revenue Prediction
+─────────────────────   →   ──────────────────────   →    ─────────────────
+• 50,000 sessions            1. Select telemetry source     • Revenue: $1,450
+• 5M spans                   2. Choose pricing type         • Costs: $1,255
+• 500M tokens                3. Set multipliers/tiers       • Margin: 13.4%
+• 5GB logs                   4. Apply filters               • Per-session: $0.029
+                            5. Run simulation
+```
+
+You can test pricing models against:
+- **Historical data** (last month's actual usage)
+- **Hypothetical scenarios** (2x growth, new feature launch)
+- **Individual customers** (understand per-customer economics)
+- **Different pricing models side-by-side** (compare 3 pricing strategies instantly)
+
+## Popular Pricing Models You Can Build
+
+The simulator supports the most common usage-based pricing patterns AI companies use:
+
+<CardGroup cols={2}>
+  <Card title="Tiered Subscription" icon="layer-group">
+    Free tier + volume discounts. Example: First 1M spans free, then $0.00005 per span up to 10M, then $0.00003 thereafter.
+  </Card>
+  <Card title="Pay-As-You-Go" icon="dollar-sign">
+    Linear or tiered per-unit pricing. Example: $0.01 per session, or $0.002 per 1k tokens.
+  </Card>
+  <Card title="Subscription + Overage" icon="gauge-high">
+    Base monthly fee + usage charges beyond included amount. Example: $500/month includes 1M spans, then $0.00005 per additional span.
+  </Card>
+  <Card title="Hybrid Model" icon="puzzle-piece">
+    Combine multiple pricing rules. Example: Base fee + per-session charge + per-token overage fee.
+  </Card>
+</CardGroup>
 
 ## Capabilities
 
-The Pricing Simulation allows you to build a pricing model to convert usage records to a bill. You can interact with the UI to select the telemetry source (session/trace/span/raw) and the multiplier to see the predicted earning and margin from the pricing model.
+### Build Pricing Models
 
-# Pricing Simulation SDK
+Design pricing rules that map your telemetry data to revenue:
+
+- **Choose your billing unit**: Sessions, traces, spans, tokens, raw events, or custom metrics
+- **Select pricing type**: Tiered, flat multiplier, threshold-based, or flat rate
+- **Add filters**: Charge differently based on model used, feature accessed, or customer tier
+- **Combine rules**: Mix and match multiple pricing components
+
+### Run What-If Scenarios
+
+Test pricing against real or projected usage:
+
+- **Historical simulation**: Apply new pricing to last month's data
+- **Growth modeling**: See revenue impact if usage doubles or triples
+- **Customer segmentation**: Understand per-customer economics
+- **A/B test pricing**: Compare multiple models side-by-side
+
+### Margin Analysis
+
+The simulator connects to your cost data to calculate true profitability:
+
+- **Real-time COGS tracking**: LLM costs, infrastructure, fixed overhead
+- **Margin per unit**: Know your profit per session, span, or token
+- **Break-even analysis**: When does a customer become profitable?
+- **Pricing recommendations**: AI-powered suggestions to improve margins
+
+### Shadow Mode
+
+Test pricing models without risking customer trust:
+
+- **Simulate without billing**: Generate reports, not invoices
+- **Compare old vs. new**: See revenue impact before switching
+- **Gradual rollout**: Test on subset of customers first
+- **Version control**: Track pricing model changes over time
+
+---
+
+## Quick Start Example
+
+Here's how a customer support agent company uses the simulator:
+
+**Current problem**: Flat $500/month, losing money on power users
+
+**Step 1**: Import last month's usage
+```json
+{
+  "sessions": 50000,
+  "llm_tokens": 500000000,
+  "llm_cost": 1000.00
+}
+```
+
+**Step 2**: Build pricing model in UI or SDK
+```typescript
+const model = {
+  name: "Pay-per-resolution model",
+  rules: [
+    {
+      displayName: "Per Session",
+      telemetrySource: "session",
+      pricingType: "tiered",
+      tiers: [
+        { upto: 10000, unitPrice: 0.00 },       // First 10k free
+        { upto: 50000, unitPrice: 0.012 },      // Next 40k at $0.012
+        { upto: "unlimited", unitPrice: 0.008 } // Beyond 50k at $0.008
+      ]
+    }
+  ],
+  platformFees: { baseMonthlyFee: 200.00 }
+}
+```
+
+**Step 3**: Run simulation
+```json
+{
+  "revenue": 800.00,
+  "costs": 1000.00,
+  "margin": -25%,
+  "recommendation": "Increase base fee or add token-based pricing"
+}
+```
+
+**Step 4**: Adjust and re-test
+```typescript
+// Add token-based pricing to improve margins
+rules: [
+  { /* session pricing */ },
+  {
+    displayName: "High Token Usage Overage",
+    telemetrySource: "raw",
+    aggregationField: "usage_total_tokens",
+    pricingType: "threshold",
+    threshold: 400000000,  // Free up to 400M tokens
+    overageRate: 0.000003  // $0.003 per 1k tokens beyond threshold
+  }
+]
+```
+
+**New simulation**:
+```json
+{
+  "revenue": 1100.00,
+  "costs": 1000.00,
+  "margin": 9.1%,
+  "status": "healthy"
+}
+```
+
+Now you have a pricing model that preserves margins while scaling with usage.
+
+---
+
+## Common Use Cases
+
+### 1. Switching from Flat to Usage-Based Pricing
+
+**Scenario**: You charge $500/month but margins are inconsistent.
+
+**Solution**:
+1. Run simulations on last 3 months of customer data
+2. Identify customers with negative margins
+3. Design tiered pricing that protects margins on high-usage customers
+4. Test in shadow mode with existing customers
+5. Roll out with grandfather pricing for early customers
+
+**Result**: Predictable 15-20% margins across all customers.
+
+---
+
+### 2. Launching a New Feature with Separate Pricing
+
+**Scenario**: Adding document analysis feature—should it be included or priced separately?
+
+**Solution**:
+1. Estimate usage based on beta testing data
+2. Create two pricing models: "included" vs. "separate add-on"
+3. Run simulations comparing projected revenue and churn risk
+4. Use filters to charge only customers using the feature
+
+**Result**: Data-driven decision on feature pricing strategy.
+
+---
+
+### 3. Preventing Margin Erosion from Power Users
+
+**Scenario**: Top 10% of customers consume 80% of resources but pay same as everyone.
+
+**Solution**:
+1. Run per-customer margin analysis
+2. Identify customers with less than 5% margins
+3. Design threshold-based pricing: included usage + overage fee
+4. Test impact on revenue and projected churn
+5. Communicate transparently with affected customers
+
+**Result**: Healthy margins without losing valuable customers.
+
+---
+
+### 4. Validating Pricing Before Launch
+
+**Scenario**: Pre-launch startup needs to price before first customer.
+
+**Solution**:
+1. Use synthetic usage data based on beta testing
+2. Build 3-5 pricing model variants
+3. Run what-if scenarios (low/medium/high usage)
+4. Calculate break-even points and target margins
+5. Choose model that balances growth and profitability
+
+**Result**: Launch with confidence, avoid expensive pricing mistakes.
+
+---
+
+## Integration with Billing
+
+Once you've designed and validated your pricing model in the simulator, connect it to your billing system:
+
+<Steps>
+  <Step title="Save Your Pricing Model">
+    Activate the pricing model via API or dashboard. This makes it available for production billing.
+  </Step>
+  <Step title="Configure Billing Webhooks">
+    Set up webhooks to trigger billing events: `billing.period_end`, `billing.threshold_reached`, or manual export.
+  </Step>
+  <Step title="Map Customer Metadata">
+    Ensure telemetry data includes `customer_id` so usage is attributed correctly.
+  </Step>
+  <Step title="Enable Shadow Mode (Optional)">
+    Run the pricing model in shadow mode to generate reports without actual billing, perfect for validation.
+  </Step>
+  <Step title="Go Live">
+    Switch from shadow mode to production. Webhooks automatically send billing data to Stripe, your internal system, or wherever you need it.
+  </Step>
+</Steps>
+
+<Info>
+**Pro tip**: Always test new pricing models in shadow mode first. You'll see exactly what customers would be charged before making it real.
+</Info>
+
+---
+
+# Pricing Simulator API Reference
 
 ## Overview
 
@@ -1237,3 +1488,105 @@ Use the `cursor` parameter to fetch the next page:
 ```
 GET /v1/pricing-models?cursor=eyJpZCI6Imxhc3RfaWQiLCJ0cyI6MTcwOTI5NDQwMH0=
 ```
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start with Shadow Mode">
+    Always test new pricing models in shadow mode before going live. Run simulations with real usage data, share results with your team, and validate that margins meet your targets.
+  </Accordion>
+
+  <Accordion title="Version Your Pricing Models">
+    Use semantic versioning (1.0.0, 1.1.0, 2.0.0) and include change summaries. This creates an audit trail and makes it easy to roll back if needed.
+  </Accordion>
+
+  <Accordion title="Monitor Per-Customer Margins">
+    Don't just look at aggregate metrics. Run margin analysis per customer to identify who's profitable and who's not. This informs both pricing and product decisions.
+  </Accordion>
+
+  <Accordion title="Use Multiple Pricing Rules">
+    Combine base fees, usage tiers, and overage charges. Hybrid models give you predictable baseline revenue while protecting margins on high usage.
+  </Accordion>
+
+  <Accordion title="Test Growth Scenarios">
+    Always run "what-if" simulations at 2x, 5x, and 10x your current usage. Your pricing should scale profitably as you grow.
+  </Accordion>
+
+  <Accordion title="Communicate Changes Transparently">
+    When changing pricing, grandfather existing customers or give 60-90 days notice. Use the simulator to quantify impact and prepare customer communications.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Pricing Strategies for AI Agents
+
+Based on patterns from successful AI agent companies:
+
+| Company Stage | Recommended Model | Why |
+|--------------|-------------------|-----|
+| **Pre-launch / Beta** | Flat fee or free | Gather usage data, validate product-market fit |
+| **Early Revenue (0-50 customers)** | Simple tiered pricing | Easy to explain, predictable for customers |
+| **Growth (50-500 customers)** | Usage-based with tiers | Scales with value, protects margins |
+| **Scale (500+ customers)** | Hybrid model | Base fee + usage ensures minimum revenue per customer |
+
+### Anti-Patterns to Avoid
+
+<Warning>
+**Don't**: Charge flat fees when usage varies 10x+ between customers
+- Result: Either lose money on power users or overprice light users
+
+**Don't**: Add usage-based pricing without monitoring COGS
+- Result: Revenue grows but margins shrink (the "unprofitable growth" trap)
+
+**Don't**: Surprise customers with huge bills
+- Result: Churn spikes, negative word-of-mouth
+
+**Don't**: Change pricing without testing impact first
+- Result: Unexpected revenue loss or customer backlash
+</Warning>
+
+---
+
+## Quick Reference
+
+### When to Use the Pricing Simulator
+
+✅ **Use it for:**
+- Designing initial pricing for a new product
+- Switching from flat to usage-based pricing
+- Adding new billable features or metrics
+- Optimizing margins on existing pricing
+- Validating pricing changes before rollout
+- Understanding per-customer economics
+- Modeling growth scenarios
+
+❌ **Don't need it for:**
+- Simple flat-fee pricing with no usage component
+- One-time services with no recurring revenue
+- Products with fixed costs and no variable usage
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Build Your First Model" icon="flask" href="#12-get-pricing-model">
+    Follow the API guide to create your first pricing model via SDK or API
+  </Card>
+  <Card title="Run a Simulation" icon="chart-line" href="#21-run-simulation">
+    Test your model against usage data and see projected revenue
+  </Card>
+  <Card title="Margin Analysis" icon="sack-dollar" href="#26-margin-analysis">
+    Calculate true profitability by connecting your cost data
+  </Card>
+  <Card title="Billing Integration" icon="webhook" href="/use-cases/billing">
+    Connect your pricing model to billing webhooks for production use
+  </Card>
+</CardGroup>
+
+<Tip>
+**Pro tip for AI agent founders**: Pricing is the fastest lever to improve revenue. A 10% pricing optimization can have the same impact as a 30% increase in sales—without changing your product or spending more on marketing.
+</Tip>
