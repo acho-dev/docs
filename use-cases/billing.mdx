@@ -22,7 +22,7 @@ Once you activate a pricing model, the billing system automatically tracks usage
 
 ```
 Telemetry Data              Pricing Engine              Billing Events
-───────────────────    →    ──────────────────    →    ─────────────────
+─────────────────    →    ──────────────────    →    ─────────────────
 • Spans (with tenant_id)    1. Aggregate usage         • billing.period_end
 • Sessions                  2. Apply pricing model        → Stripe webhook
 • Tokens                    3. Calculate charges       • billing.threshold_reached
