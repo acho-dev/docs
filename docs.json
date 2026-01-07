@@ -27,7 +27,8 @@
               "use-cases/cost-control",
               "use-cases/pricing-simulator",
               "use-cases/billing",
-              "use-cases/agent-performance-monitoring"
+              "use-cases/agent-performance-monitoring",
+              "use-cases/customer-portal"
             ]
           },
           {
