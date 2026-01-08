@@ -40,7 +40,8 @@
               "sdk/typescript/frameworks",
               "sdk/typescript/emitters",
               "sdk/typescript/agent-tracking",
-              "sdk/typescript/support"
+              "sdk/typescript/support",
+              "sdk/typescript/troubleshooting"
             ]
           },
           {
@@ -51,7 +52,8 @@
               "sdk/python/instrumentation",
               "sdk/python/frameworks",
               "sdk/python/emitters",
-              "sdk/python/support"
+              "sdk/python/support",
+              "sdk/python/troubleshooting"
             ]
           }
         ]
